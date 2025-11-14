@@ -42,11 +42,11 @@
 
 - [x] Bedingte Anweisungen (`if`, `else if`, `else`)
 - [x] `switch`-Case Anweisungen
-- [ ] Schleifen: `for`, `while`, `do...while`
-- [ ] `for...of` für Arrays
-- [ ] `for...in` für Objekte
-- [ ] `break` & `continue`
-- [ ] Fehlerbehandlung mit `try`, `catch`, `finally`
+- [x] Schleifen: `for`, `while`, `do...while`
+- [x] `for...of` für Arrays
+- [x] `for...in` für Objekte
+- [x] `break` & `continue`
+- [x] Fehlerbehandlung mit `try`, `catch`, `finally`
 
 ---
 

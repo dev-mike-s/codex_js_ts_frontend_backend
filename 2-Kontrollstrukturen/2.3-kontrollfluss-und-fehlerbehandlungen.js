@@ -399,3 +399,4 @@ BEST PRACTICES:
 */
 
 console.log("\n✅ 2.3 Kontrollfluss & Fehlerbehandlung abgeschlossen!");
+
