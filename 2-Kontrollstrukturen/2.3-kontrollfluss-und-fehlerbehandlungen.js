@@ -1,402 +1,509 @@
 // ============================================
-// 2.3 KONTROLLFLUSS & FEHLERBEHANDLUNG
+// FEHLERBEHANDLUNG & KONTROLLFLUSS
+// Vorbereitung für React
 // ============================================
 
-// ============================================
-// BREAK - Schleife verlassen
-// ============================================
+/*
+🎯 LERNZIEL: Nach diesem Kapitel verstehst du die 3 kritischen Patterns
+für sichere Fehlerbehandlung, die du für React JEDEN TAG brauchst.
 
-console.log("--- BREAK: Schleife beenden ---");
-
-// Einfaches Beispiel: Suche in Array
-let zahlen = [1, 2, 3, 4, 5];
-
-for (let i = 0; i < zahlen.length; i++) {
-  if (zahlen[i] === 3) {
-    console.log("Zahl 3 gefunden bei Index", i);
-    break; // ✅ Schleife wird komplett beendet
-  }
-  console.log("Prüfe:", zahlen[i]);
-}
-
-// Ausgabe:
-// Prüfe: 1
-// Prüfe: 2
-// Zahl 3 gefunden bei Index 2
-// (Schleife stoppt - 4 und 5 werden nicht geprüft)
-
-// PRAKTISCHES BEISPIEL: Benutzer authentifizieren
-console.log("\n--- Login-Versuche ---");
-
-function anmeldenMitVersuchen() {
-  let maxVersuche = 3;
-  let versuche = 0;
-
-  while (versuche < maxVersuche) {
-    versuche++;
-
-    // Simuliere Passwort-Check
-    let passwortRichtig = versuche === 2; // Beim 2. Versuch ist es richtig
-
-    if (passwortRichtig) {
-      console.log(`✅ Versuch ${versuche}: Anmeldung erfolgreich!`);
-      break; // ✅ Schleife beenden, wir sind angemeldet
-    } else {
-      console.log(`❌ Versuch ${versuche}: Falsches Passwort`);
-    }
-  }
-}
-
-anmeldenMitVersuchen();
+Fokus: try-catch für API-Calls, Guard Clauses für Props, Error Boundaries
+*/
 
 // ============================================
-// CONTINUE - Aktuellen Durchlauf überspringen
+// KONZEPT 1: TRY-CATCH
+// Fehler sicher abfangen
 // ============================================
 
-console.log("\n--- CONTINUE: Durchlauf überspringen ---");
+/*
+KERNPROBLEM: Fehler crashen die ganze App
+LÖSUNG: try-catch für Code, der fehlschlagen kann
 
-// Nur ungerade Zahlen ausgeben
-console.log("Ungerade Zahlen:");
-for (let i = 0; i < 10; i++) {
-  if (i % 2 === 0) {
-    continue; // ✅ Gerade Zahlen überspringen
-  }
-  console.log(i); // 1, 3, 5, 7, 9
-}
+REGEL:
+→ try: Code der Fehler werfen könnte
+→ catch: Wird NUR bei Fehler ausgeführt
+→ finally: Läuft IMMER (optional)
+→ Für API-Calls, JSON-Parsing, unsichere Operationen
+*/
 
-// PRAKTISCHES BEISPIEL: Nur Premium-Benutzer verarbeiten
-console.log("\n--- Premium-Benutzer filtern ---");
-
-let benutzer = [
-  { name: "Max", premium: false },
-  { name: "Anna", premium: true },
-  { name: "Tom", premium: false },
-  { name: "Lisa", premium: true },
-];
-
-console.log("Verarbeite Premium-Benutzer:");
-for (let user of benutzer) {
-  if (!user.premium) {
-    continue; // ✅ Überspringe Nicht-Premium-Benutzer
-  }
-  console.log(`${user.name} ist Premium-Mitglied`);
-}
-
-// Ausgabe:
-// Anna ist Premium-Mitglied
-// Lisa ist Premium-Mitglied
-
-// ============================================
-// VERSCHACHTELTE SCHLEIFEN mit BREAK & CONTINUE
-// ============================================
-
-console.log("\n--- Verschachtelte Schleifen ---");
-
-// Beispiel: Erste perfekte Kombination finden
-for (let i = 1; i <= 3; i++) {
-  for (let j = 1; j <= 3; j++) {
-    console.log(`Prüfe: ${i} + ${j}`);
-
-    if (i + j === 4) {
-      console.log(`✅ Gefunden: ${i} + ${j} = 4`);
-      break; // ❌ Stoppt nur innere Schleife!
-    }
-  }
-}
-
-// Problem: break stoppt nur die innerste Schleife
-// Die äußere Schleife läuft weiter!
-
-// ✅ LÖSUNG: Labels verwenden
-console.log("\n--- Labels für äußere Schleifen ---");
-
-äußereSchleife: for (let i = 1; i <= 3; i++) {
-  for (let j = 1; j <= 3; j++) {
-    console.log(`Label-Test: ${i} + ${j}`);
-
-    if (i + j === 4) {
-      console.log(`✅ Gefunden: ${i} + ${j} = 4`);
-      break äußereSchleife; // ✅ Bricht BEIDE Schleifen ab!
-    }
-  }
-}
-
-// ============================================
-// TRY-CATCH - Fehler abfangen
-// ============================================
-
-console.log("\n--- Try-Catch: Fehler abfangen ---");
-
-// KONZEPT: try = "Versuche diesen Code"
-//          catch = "Falls Fehler auftritt, mach das"
-
+// ──────────── Basis-Verwendung ────────────
 try {
-  console.log("Code im try-Block wird ausgeführt");
+  console.log("1. Code im try");
 
   // Fehler provozieren:
-  let obj = null;
-  // console.log(obj.name); // ❌ TypeError: Cannot read property 'name' of null
+  const obj = null;
+  console.log(obj.name); // TypeError!
 
-  console.log("Dieser Code wird auch ausgeführt (solange kein Fehler)");
+  console.log("2. Wird nie erreicht");
 } catch (error) {
-  // Dieser Block läuft NUR wenn Fehler im try-Block auftritt
-  console.log("❌ Fehler abgefangen!", error.message);
+  console.log("Fehler:", error.message);
 }
 
-// PRAKTISCHES BEISPIEL: JSON parsen
-console.log("\n--- Fehlerhafte JSON Verarbeitung ---");
+console.log("3. Programm läuft weiter"); // ✅ App crasht nicht
 
+// ──────────── Praktisch: JSON parsen ────────────
 function parseJSON(jsonString) {
   try {
-    let daten = JSON.parse(jsonString);
-    console.log("✅ JSON erfolgreich geparst:", daten);
-    return daten;
+    return JSON.parse(jsonString);
   } catch (error) {
-    console.log("❌ Fehler beim Parsen:", error.message);
-    return null; // Null zurückgeben wenn Fehler
+    console.log("Ungültiges JSON:", error.message);
+    return null; // Fallback-Wert
   }
 }
 
-parseJSON('{"name": "Max"}'); // ✅ Valides JSON
-parseJSON("Das ist kein JSON"); // ❌ Fehler
-parseJSON('{"name": "Max"'); // ❌ Unvollständiges JSON (fehlende })
+console.log(parseJSON('{"name":"Max"}')); // { name: "Max" }
+console.log(parseJSON("invalid")); // null
 
-// ============================================
-// FINALLY - Code der IMMER läuft
-// ============================================
+// ──────────── Praktisch: API-Call (simuliert) ────────────
+async function fetchUser(id) {
+  try {
+    // const response = await fetch(`/api/users/${id}`);
+    // const data = await response.json();
 
-console.log("\n--- Finally-Block ---");
+    // Simuliere Fehler:
+    if (id < 0) throw new Error("Invalid ID");
 
-// WICHTIG: finally läuft IMMER, egal ob Fehler oder nicht!
-
-try {
-  console.log("Im try-Block");
-  // throw new Error("Test-Fehler"); // Kann kommentiert/uncommentiert werden
-} catch (error) {
-  console.log("Im catch-Block:", error.message);
-} finally {
-  console.log("Im finally-Block (läuft IMMER!)"); // ✅ Wird immer ausgeführt
+    return { id, name: "Max" };
+  } catch (error) {
+    console.log("API-Fehler:", error.message);
+    return null;
+  }
 }
 
-// PRAKTISCHES BEISPIEL: Datenbank-Verbindung schließen
-console.log("\n--- Datenbank-Verbindung ---");
-
-function datenbankOperation() {
-  let verbindungOffen = false;
+// ──────────── finally - Cleanup Code ────────────
+function processFile(filename) {
+  let fileOpen = false;
 
   try {
-    console.log("1. Verbindung zur DB öffnen");
-    verbindungOffen = true;
+    console.log("Öffne Datei:", filename);
+    fileOpen = true;
 
-    console.log("2. Daten abrufen");
-    // Simuliere Fehler: throw new Error("Datenbankfehler!");
+    // Verarbeitung...
+    if (!filename) throw new Error("Kein Dateiname");
 
-    console.log("3. Daten verarbeiten");
+    console.log("Verarbeite Datei");
   } catch (error) {
-    console.log("❌ Fehler:", error.message);
+    console.log("Fehler:", error.message);
   } finally {
-    if (verbindungOffen) {
-      console.log("4. Verbindung schließen (finally!)"); // ✅ Wird immer ausgeführt
-      verbindungOffen = false;
+    if (fileOpen) {
+      console.log("Schließe Datei"); // ✅ Läuft immer
     }
   }
 }
 
-datenbankOperation();
+processFile("data.txt");
+processFile(null);
+
+// 💡 WARUM IST DAS FÜR REACT WICHTIG?
+// → API-Calls in useEffect mit try-catch absichern
+// → JSON-Parsing von localStorage
+// → Fehler verhindern App-Crash
+// → Error Boundaries fangen Render-Fehler
+// → finally für Cleanup (Loading-States)
 
 // ============================================
-// EIGENE FEHLER WERFEN (throw)
+// KONZEPT 2: GUARD CLAUSES
+// Defensive Programmierung für Props
 // ============================================
 
-console.log("\n--- Fehler werfen mit throw ---");
+/*
+KERNPROBLEM: Props können null/undefined sein → Fehler
+LÖSUNG: Guard Clauses am Anfang der Funktion
 
-function alterValidieren(alter) {
-  if (alter < 0) {
-    throw new Error("Alter kann nicht negativ sein!"); // ✅ Fehler werfen
+REGEL:
+→ Fehler-Fälle ZUERST prüfen
+→ Early Return bei Problemen
+→ Hauptlogik nur wenn alles OK
+→ Code bleibt flach, nicht verschachtelt
+*/
+
+// ──────────── Ohne Guard Clauses (schlecht) ────────────
+function processDataBad(data) {
+  if (data) {
+    if (Array.isArray(data)) {
+      if (data.length > 0) {
+        // Hauptlogik tief verschachtelt
+        console.log("Verarbeite", data.length, "Items");
+      }
+    }
+  }
+}
+
+// ──────────── Mit Guard Clauses (gut) ────────────
+function processData(data) {
+  // Guard 1: null/undefined prüfen
+  if (!data) {
+    console.log("Keine Daten");
+    return; // Early Return
   }
 
-  if (alter < 18) {
-    throw new Error("Du musst mindestens 18 Jahre alt sein!");
+  // Guard 2: Typ prüfen
+  if (!Array.isArray(data)) {
+    console.log("Kein Array");
+    return;
   }
 
-  console.log(`✅ Alter ${alter} ist valide`);
+  // Guard 3: Leer prüfen
+  if (data.length === 0) {
+    console.log("Leeres Array");
+    return;
+  }
+
+  // Hauptlogik auf oberster Ebene
+  console.log("Verarbeite", data.length, "Items");
+  data.forEach((item) => console.log(item));
+}
+
+processData(null); // Guard 1
+processData("not array"); // Guard 2
+processData([]); // Guard 3
+processData([1, 2, 3]); // ✅ Hauptlogik
+
+// ──────────── React-Pattern: Component Guards ────────────
+function UserProfile({ user }) {
+  // Guard: Kein User
+  if (!user) {
+    return null; // Oder <EmptyState />
+  }
+
+  // Guard: Keine ID
+  if (!user.id) {
+    console.warn("User ohne ID");
+    return null;
+  }
+
+  // Hauptlogik - nur wenn User valid
+  return `<div>Name: ${user.name}</div>`;
+}
+
+// ──────────── Optional Chaining (moderne Alternative) ────────────
+const user = null;
+
+// Alt: Verschachtelte Checks
+if (user && user.address && user.address.city) {
+  console.log(user.address.city);
+}
+
+// Neu: Optional Chaining
+console.log(user?.address?.city); // undefined (kein Fehler!)
+
+// Mit Nullish Coalescing kombinieren
+const city = user?.address?.city ?? "Unbekannt";
+console.log(city); // "Unbekannt"
+
+// 💡 WARUM IST DAS FÜR REACT WICHTIG?
+// → Props können undefined sein
+// → Guard am Anfang der Component
+// → Optional Chaining für nested Properties
+// → Verhindert "Cannot read property of undefined"
+// → if (!data) return null; ist Standard-Pattern
+
+// ============================================
+// KONZEPT 3: EIGENE FEHLER WERFEN
+// Validierung & Custom Errors
+// ============================================
+
+/*
+KERNPROBLEM: Fehler müssen kontrolliert weitergegeben werden
+LÖSUNG: throw new Error() für eigene Fehler
+
+REGEL:
+→ throw new Error("message") für Validierung
+→ Fehler können mit try-catch gefangen werden
+→ Aussagekräftige Error-Messages
+→ Nur für echte Fehler, nicht für normale Logik
+*/
+
+// ──────────── Basis: Fehler werfen ────────────
+function validateAge(age) {
+  if (age < 0) {
+    throw new Error("Alter kann nicht negativ sein");
+  }
+
+  if (age < 18) {
+    throw new Error("Mindestalter 18 Jahre");
+  }
+
+  console.log("Alter gültig:", age);
 }
 
 // Fehler abfangen
 try {
-  alterValidieren(15);
+  validateAge(15);
 } catch (error) {
-  console.log("❌", error.message); // Fehler wird abgefangen
+  console.log("Validierung fehlgeschlagen:", error.message);
 }
 
-try {
-  alterValidieren(25);
-} catch (error) {
-  console.log("❌", error.message); // Wird nicht ausgeführt
+// ──────────── Praktisch: Form-Validierung ────────────
+function validateForm(formData) {
+  if (!formData.email) {
+    throw new Error("Email erforderlich");
+  }
+
+  if (!formData.email.includes("@")) {
+    throw new Error("Ungültige Email");
+  }
+
+  if (formData.password.length < 8) {
+    throw new Error("Passwort zu kurz (min. 8 Zeichen)");
+  }
+
+  return true;
 }
 
-// ============================================
-// ERROR-TYPEN
-// ============================================
+// In React-Component verwenden
+function handleSubmit(formData) {
+  try {
+    validateForm(formData);
+    console.log("Form gültig, sende Daten...");
+  } catch (error) {
+    console.log("Fehler:", error.message);
+    // setError(error.message)
+  }
+}
 
-console.log("\n--- Verschiedene Error-Typen ---");
-
-// JavaScript hat verschiedene Error-Typen:
-
-// 1. SyntaxError - Fehler im Code-Syntax
-// JSON.parse('{invalid json}'); // ❌ SyntaxError
-
-// 2. TypeError - Falscher Datentyp
-// let x = null;
-// x.toString(); // ❌ TypeError: Cannot read property 'toString' of null
-
-// 3. ReferenceError - Variable nicht definiert
-// console.log(nichtDefiniert); // ❌ ReferenceError: nichtDefiniert is not defined
-
-// 4. RangeError - Wert außerhalb Bereich
-// let arr = new Array(-1); // ❌ RangeError: Invalid array length
-
-// Error abfangen und Typ prüfen
+// ──────────── Error-Typen verstehen ────────────
 try {
   JSON.parse("{invalid}");
 } catch (error) {
-  console.log("Error-Name:", error.name); // "SyntaxError"
-  console.log("Error-Message:", error.message); // Detaillierte Beschreibung
-  console.log("Error-Stack:", error.stack); // Zeigt wo Fehler auftrat
+  console.log("Type:", error.name); // "SyntaxError"
+  console.log("Message:", error.message); // Details
+  console.log("Stack:", error.stack); // Wo ist Fehler?
 }
 
-// ============================================
-// NESTED TRY-CATCH (Verschachtelt)
-// ============================================
+// Häufige Error-Typen:
+// SyntaxError: Ungültiger Code/JSON
+// TypeError: Falscher Datentyp (null.property)
+// ReferenceError: Variable nicht definiert
+// RangeError: Wert außerhalb Bereich
 
-console.log("\n--- Verschachtelte Try-Catch Blöcke ---");
-
-function komplexeOperation() {
-  try {
-    console.log("Äußerer try-Block");
-
-    try {
-      console.log("Innerer try-Block");
-      throw new Error("Innerer Fehler!");
-    } catch (error) {
-      console.log("Innerer catch:", error.message); // Fängt inneren Fehler
-      throw new Error("Fehler weitergeleitet!"); // ⚠️ Fehler weitergeben
-    }
-  } catch (error) {
-    console.log("Äußerer catch:", error.message); // Fängt weitergeleitet Fehler
-  }
-}
-
-komplexeOperation();
+// 💡 WARUM IST DAS FÜR REACT WICHTIG?
+// → Form-Validierung vor Submit
+// → Custom Hooks können Fehler werfen
+// → Error Messages für User-Feedback
+// → API-Validierung vor Request
 
 // ============================================
-// FEHLERBEHANDLUNG IN FUNKTIONEN
-// ============================================
-
-console.log("\n--- Guard Clauses (Defensive Programmierung) ---");
-
-// PATTERN: Frühe Rückgabe bei Fehlern
-function bestellungVerarbeiten(bestellung) {
-  // Guard Clause 1: Prüfe null
-  if (!bestellung) {
-    console.log("❌ Bestellung ist null");
-    return; // Frühe Rückgabe
-  }
-
-  // Guard Clause 2: Prüfe Artikel
-  if (!bestellung.artikel || bestellung.artikel.length === 0) {
-    console.log("❌ Keine Artikel in Bestellung");
-    return; // Frühe Rückgabe
-  }
-
-  // Guard Clause 3: Prüfe Menge
-  if (bestellung.menge <= 0) {
-    console.log("❌ Menge muss größer 0 sein");
-    return; // Frühe Rückgabe
-  }
-
-  // Hauptlogik - wird nur erreicht wenn alle Checks bestanden
-  console.log("✅ Bestellung verarbeitet:", bestellung.artikel);
-}
-
-bestellungVerarbeiten(null); // Guard Clause 1
-bestellungVerarbeiten({ artikel: [] }); // Guard Clause 2
-bestellungVerarbeiten({ artikel: "Buch", menge: 0 }); // Guard Clause 3
-bestellungVerarbeiten({ artikel: "Buch", menge: 2 }); // ✅ Hauptlogik
-
-// ✅ VORTEIL: Code ist flacher und lesbarer
-// ❌ OHNE GUARD CLAUSES: Tiefe Verschachtelung!
-
-// ============================================
-// FEHLERBEHANDLUNG MIT ASYNC/AWAIT (Vorschau)
-// ============================================
-
-console.log("\n--- Try-Catch mit async (Vorschau auf später) ---");
-
-// Hier nur zur Info - wird später im Kapitel "Asynchrones JavaScript" ausführlich behandelt
-
-async function datenAbrufen(url) {
-  try {
-    // const response = await fetch(url); // Würde echten Request machen
-    console.log("Daten abrufen...");
-
-    // Simuliere erfolgreiche Abfrage
-    let daten = { name: "Max", alter: 25 };
-    console.log("✅ Daten erfolgreich abgerufen:", daten);
-  } catch (error) {
-    console.log("❌ Fehler beim Abrufen:", error.message);
-  } finally {
-    console.log("Anfrage abgeschlossen");
-  }
-}
-
-// datenAbrufen('/api/users'); // Würde funktionieren, wenn wir async/await nutzen
-
-// ============================================
-// ZUSAMMENFASSUNG
+// BONUS: BREAK & CONTINUE (Kurzform)
 // ============================================
 
 /*
-BREAK & CONTINUE:
-✅ break: Schleife KOMPLETT beenden
-✅ continue: Aktuellen Durchlauf überspringen
-✅ Labels verwenden für äußere Schleifen (selten nötig)
-
-TRY-CATCH:
-✅ try: Code der Fehler werfen könnte
-✅ catch: Wird NUR bei Fehler ausgeführt
-✅ error.message: Fehlernachricht
-✅ error.name: Fehlertyp (SyntaxError, TypeError, etc.)
-
-FINALLY:
-✅ Wird IMMER ausgeführt (mit oder ohne Fehler)
-✅ Perfekt für Cleanup (Datei schließen, DB-Verbindung schließen)
-✅ Optional - nicht immer nötig
-
-FEHLER WERFEN:
-✅ throw new Error("Nachricht") für eigene Fehler
-✅ Fehler können abgefangen und behandelt werden
-✅ Verhindert, dass Programm unkontrolliert crasht
-
-GUARD CLAUSES:
-✅ Prüfungen am Anfang einer Funktion
-✅ Frühe Rückgabe bei Problemen
-✅ Code ist flacher und lesbarer
-
-ERROR-TYPEN:
-✅ SyntaxError: Problem im Code-Syntax
-✅ TypeError: Falscher Datentyp
-✅ ReferenceError: Variable nicht definiert
-✅ RangeError: Wert außerhalb Bereich
-
-BEST PRACTICES:
-✅ IMMER Fehler abfangen, die außerhalb deiner Kontrolle sind
-✅ Guard Clauses am Anfang von Funktionen verwenden
-✅ Finally für Cleanup-Code nutzen
-✅ Aussagekräftige Error-Messages werfen
-✅ Error-Handling nicht ignorieren (❌ try {} catch {} ist faul!)
-✅ Fehler in Logs speichern (später im Produktiv-System wichtig!)
+HINWEIS: In React verwendest du diese SELTEN!
+Array-Methoden (map, filter, find) sind besser.
 */
 
-console.log("\n✅ 2.3 Kontrollfluss & Fehlerbehandlung abgeschlossen!");
+// ──────────── break - Schleife beenden ────────────
+const numbers = [1, 2, 3, 4, 5];
 
+for (let i = 0; i < numbers.length; i++) {
+  if (numbers[i] === 3) {
+    console.log("Gefunden:", numbers[i]);
+    break; // Stoppt Schleife
+  }
+}
+
+// ✅ BESSER in React: find()
+const found = numbers.find((num) => num === 3);
+console.log("Gefunden:", found);
+
+// ──────────── continue - Durchlauf überspringen ────────────
+for (let i = 0; i < 10; i++) {
+  if (i % 2 === 0) {
+    continue; // Überspringt gerade Zahlen
+  }
+  console.log(i); // 1, 3, 5, 7, 9
+}
+
+// ✅ BESSER in React: filter()
+const odds = [...Array(10).keys()].filter((i) => i % 2 !== 0);
+console.log(odds);
+
+// 💡 WARUM IST DAS FÜR REACT WICHTIG?
+// → In React: Fast nie break/continue
+// → Array-Methoden sind deklarativer
+// → find() statt for + break
+// → filter() statt for + continue
+
+// ============================================
+// REACT-SPEZIFISCH: ERROR BOUNDARIES
+// ============================================
+
+/*
+Error Boundaries fangen Render-Fehler in React.
+Hier nur zur Info - wird im React-Kurs behandelt.
+
+class ErrorBoundary extends React.Component {
+  state = { hasError: false };
+  
+  static getDerivedStateFromError(error) {
+    return { hasError: true };
+  }
+  
+  componentDidCatch(error, errorInfo) {
+    console.log("Error:", error, errorInfo);
+  }
+  
+  render() {
+    if (this.state.hasError) {
+      return <h1>Etwas ist schiefgelaufen.</h1>;
+    }
+    return this.props.children;
+  }
+}
+
+// Verwendung:
+<ErrorBoundary>
+  <MyComponent />
+</ErrorBoundary>
+*/
+
+// ============================================
+// PRAKTISCHE PATTERNS FÜR REACT
+// ============================================
+
+// ──────────── Pattern 1: API-Call mit Error ────────────
+async function loadUser(id) {
+  try {
+    // const response = await fetch(`/api/users/${id}`);
+    // if (!response.ok) throw new Error("User nicht gefunden");
+    // const data = await response.json();
+
+    // Simuliert:
+    if (id < 0) throw new Error("Ungültige ID");
+    return { id, name: "Max" };
+  } catch (error) {
+    console.error("Fehler beim Laden:", error.message);
+    // In React: setError(error.message)
+    return null;
+  }
+}
+
+// ──────────── Pattern 2: Safe JSON Parse ────────────
+function safeGetFromStorage(key) {
+  try {
+    const item = localStorage.getItem(key);
+    return item ? JSON.parse(item) : null;
+  } catch (error) {
+    console.error("localStorage Error:", error.message);
+    return null;
+  }
+}
+
+// ──────────── Pattern 3: Component mit Guards ────────────
+function ProductCard({ product }) {
+  // Guards
+  if (!product) return null;
+  if (!product.id) {
+    console.warn("Product without ID");
+    return null;
+  }
+
+  // Optional Chaining für nested Props
+  const imageUrl = product.images?.[0]?.url ?? "/placeholder.jpg";
+  const price = product.price ?? 0;
+
+  // Hauptlogik
+  return `
+    <div>
+      <img src="${imageUrl}" />
+      <h3>${product.name}</h3>
+      <p>${price}€</p>
+    </div>
+  `;
+}
+
+// ──────────── Pattern 4: Form Validation ────────────
+function submitForm(formData) {
+  try {
+    // Validierung
+    if (!formData.email) throw new Error("Email erforderlich");
+    if (!formData.password) throw new Error("Passwort erforderlich");
+
+    // Submit
+    console.log("Form submitted:", formData);
+    // In React: await api.post("/login", formData)
+  } catch (error) {
+    console.error("Form Error:", error.message);
+    // In React: setError(error.message)
+  }
+}
+
+// ============================================
+// ZUSAMMENFASSUNG
+// Die 3 kritischen Patterns
+// ============================================
+
+/*
+┌─────────────────────────────────────────────────────────────┐
+│ 1. TRY-CATCH                                                │
+├─────────────────────────────────────────────────────────────┤
+│ Für unsichere Operationen       │ API-Calls, JSON-Parsing  │
+│ catch: Fehler abfangen           │ App crasht nicht         │
+│ finally: Cleanup (optional)      │ Läuft immer              │
+│ Fehler loggen, User informieren  │ Nicht stillschweigend!   │
+└─────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────┐
+│ 2. GUARD CLAUSES                                            │
+├─────────────────────────────────────────────────────────────┤
+│ Fehler-Fälle ZUERST             │ if (!data) return null   │
+│ Early Return                     │ Code bleibt flach        │
+│ Optional Chaining modern         │ user?.address?.city      │
+│ Standard in React Components     │ Props-Validierung        │
+└─────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────┐
+│ 3. EIGENE FEHLER WERFEN                                     │
+├─────────────────────────────────────────────────────────────┤
+│ throw new Error("message")       │ Für Validierung          │
+│ Aussagekräftige Messages         │ User versteht Fehler     │
+│ Mit try-catch fangen             │ Kontrollierte Fehler     │
+│ Nicht für normale Logik          │ Nur echte Fehler         │
+└─────────────────────────────────────────────────────────────┘
+
+
+HÄUFIGE FEHLER (und wie man sie vermeidet):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+❌ try-catch ignorieren              → Fehler lassen App crashen
+❌ Fehler stillschweigend fangen     → catch {} ohne Handling
+❌ Zu viele try-catch                → Nur wo wirklich nötig
+❌ Keine Guards bei Props            → "Cannot read property of undefined"
+❌ break/continue statt filter/find  → Array-Methoden bevorzugen
+
+
+DEBUGGING-TIPPS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+→ error.message für User-Feedback
+→ error.stack für Debugging
+→ console.error() statt console.log()
+→ Browser Dev Tools: Pause on Exceptions
+→ React Dev Tools: Error Boundaries
+
+
+VORBEREITUNG FÜR REACT:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Diese Patterns wirst du in React JEDEN TAG verwenden:
+
+→ API-Calls mit try-catch:         try { await fetch() } catch { ... }
+→ Guards in Components:             if (!props.user) return null;
+→ Optional Chaining:                user?.profile?.avatar ?? "/default.jpg"
+→ localStorage mit try-catch:       try { JSON.parse() } catch { null }
+→ Form-Validierung:                 throw new Error("Email required")
+
+KRITISCHE PATTERNS:
+→ useEffect mit async:              useEffect(() => { async function load() { try { await fetch() } catch {} } load() }, [])
+→ Error States:                     const [error, setError] = useState(null)
+→ Loading + Error:                  {loading ? <Spinner /> : error ? <Error /> : <Data />}
+→ Error Boundaries:                 <ErrorBoundary><App /></ErrorBoundary>
+
+WICHTIGSTE REGEL:
+Fehler IMMER behandeln, nie ignorieren!
+- API-Calls können fehlschlagen
+- Props können undefined sein
+- User-Input muss validiert werden
+- localStorage kann voll sein
+→ try-catch, Guards, Optional Chaining sind deine Freunde
+*/
+
+console.log("\n✅ Fehlerbehandlung abgeschlossen!");
+console.log("💡 try-catch und Guards sind essentiell für sichere React-Apps!");

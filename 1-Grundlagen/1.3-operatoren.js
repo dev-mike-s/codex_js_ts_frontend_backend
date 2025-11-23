@@ -1,385 +1,396 @@
 // ============================================
-// 1.3 OPERATOREN
+// 1.3 OPERATOREN IN JAVASCRIPT
+// Vorbereitung für React
 // ============================================
-
-// ============================================
-// ARITHMETISCHE OPERATOREN
-// ============================================
-
-// GRUNDRECHENARTEN
-let summe = 5 + 3; // Addition
-console.log("5 + 3 =", summe); // 8
-
-let differenz = 5 - 3; // Subtraktion
-console.log("5 - 3 =", differenz); // 2
-
-let produkt = 5 * 3; // Multiplikation
-console.log("5 * 3 =", produkt); // 15
-
-let quotient = 5 / 3; // Division
-console.log("5 / 3 =", quotient); // 1.6666666666666667
-
-let rest = 5 % 3; // Modulo (Rest der Division)
-console.log("5 % 3 =", rest); // 2
-
-let potenz = 5 ** 3; // Potenzierung (ES2016)
-console.log("5 ** 3 =", potenz); // 125
-
-// MODULO - Praktische Anwendungen
-console.log("\n--- Modulo Beispiele ---");
-
-// Gerade oder Ungerade prüfen
-let zahl = 7;
-console.log("7 ist", zahl % 2 === 0 ? "gerade" : "ungerade"); // ungerade
-
-// Jeden 3. Durchlauf
-for (let i = 0; i < 10; i++) {
-  if (i % 3 === 0) {
-    console.log(i, "ist durch 3 teilbar");
-  }
-}
-
-// REST-DIVISION vs. GANZZAHL-DIVISION
-console.log("\n--- Division Details ---");
-console.log(10 / 3); // 3.3333... (Float-Division)
-console.log(Math.floor(10 / 3)); // 3 (Ganzzahl-Division)
-console.log(10 % 3); // 1 (Rest)
-
-// INKREMENT & DEKREMENT
-console.log("\n--- Inkrement & Dekrement ---");
-
-let counter = 5;
-
-// Post-Inkrement (erst verwenden, dann erhöhen)
-console.log(counter++); // 5 (gibt 5 zurück, dann erhöht)
-console.log(counter); // 6
-
-// Pre-Inkrement (erst erhöhen, dann verwenden)
-console.log(++counter); // 7 (erst erhöht, dann zurückgegeben)
-console.log(counter); // 7
-
-// Post-Dekrement
-console.log(counter--); // 7 (gibt 7 zurück, dann verringert)
-console.log(counter); // 6
-
-// Pre-Dekrement
-console.log(--counter); // 5 (erst verringert, dann zurückgegeben)
-console.log(counter); // 5
-
-// ⚠️ VORSICHT: String-Konkatenation vs. Addition
-console.log("\n--- String + Number ---");
-console.log(5 + 3); // 8 (Number Addition)
-console.log("5" + 3); // "53" (String Konkatenation!)
-console.log("5" + "3"); // "53" (String Konkatenation)
-console.log(5 + 3 + "2"); // "82" (erst 5+3=8, dann "8"+"2"="82")
-console.log("2" + 5 + 3); // "253" (von links: "2"+"5"="25", dann "25"+"3"="253")
-
-// ============================================
-// ZUWEISUNGSOPERATOREN
-// ============================================
-
-console.log("\n--- Zuweisungsoperatoren ---");
-
-// EINFACHE ZUWEISUNG
-let wert = 10;
-console.log("Start:", wert); // 10
-
-// ADDITION ASSIGNMENT (+=)
-wert += 5; // Entspricht: wert = wert + 5
-console.log("Nach += 5:", wert); // 15
-
-// SUBTRAKTION ASSIGNMENT (-=)
-wert -= 3; // Entspricht: wert = wert - 3
-console.log("Nach -= 3:", wert); // 12
-
-// MULTIPLIKATION ASSIGNMENT (*=)
-wert *= 2; // Entspricht: wert = wert * 2
-console.log("Nach *= 2:", wert); // 24
-
-// DIVISION ASSIGNMENT (/=)
-wert /= 4; // Entspricht: wert = wert / 4
-console.log("Nach /= 4:", wert); // 6
-
-// MODULO ASSIGNMENT (%=)
-wert %= 4; // Entspricht: wert = wert % 4
-console.log("Nach %= 4:", wert); // 2
-
-// POTENZ ASSIGNMENT (**=)
-wert **= 3; // Entspricht: wert = wert ** 3
-console.log("Nach **= 3:", wert); // 8
-
-// WEITERE ASSIGNMENT-OPERATOREN
-let text = "Hallo";
-text += " Welt"; // String-Konkatenation
-console.log(text); // "Hallo Welt"
-
-// 💡 WICHTIG FÜR REACT:
-// Verwende KEINE Assignment-Operatoren für State!
-// ❌ Schlecht: count += 1
-// ✅ Gut: setCount(count + 1)
-
-// ============================================
-// VERGLEICHSOPERATOREN
-// ============================================
-
-console.log("\n--- Vergleichsoperatoren ---");
-
-// LOSE GLEICHHEIT (==) - Konvertiert Typen!
-console.log("5 == '5':", 5 == "5"); // ✅ true (String wird zu Number konvertiert)
-console.log("0 == false:", 0 == false); // ✅ true (false wird zu 0)
-console.log("'' == false:", "" == false); // ✅ true (beide werden zu 0)
-console.log("null == undefined:", null == undefined); // ✅ true (Spezialfall)
-
-// STRIKTE GLEICHHEIT (===) - Keine Typ-Konvertierung!
-console.log("\n--- Strikte Gleichheit (EMPFOHLEN) ---");
-console.log("5 === '5':", 5 === "5"); // ❌ false (Number !== String)
-console.log("0 === false:", 0 === false); // ❌ false (Number !== Boolean)
-console.log("'' === false:", "" === false); // ❌ false (String !== Boolean)
-console.log("null === undefined:", null === undefined); // ❌ false
-
-// ✅ BESTE PRAXIS: IMMER === verwenden!
-console.log("5 === 5:", 5 === 5); // true
-console.log("'Hallo' === 'Hallo':", "Hallo" === "Hallo"); // true
-
-// LOSE UNGLEICHHEIT (!=)
-console.log("\n--- Lose vs. Strikte Ungleichheit ---");
-console.log("5 != '5':", 5 != "5"); // false (werden gleich konvertiert)
-console.log("5 != 6:", 5 != 6); // true
-
-// STRIKTE UNGLEICHHEIT (!==)
-console.log("5 !== '5':", 5 !== "5"); // ✅ true (verschiedene Typen)
-console.log("5 !== 6:", 5 !== 6); // true
-
-// GRÖßER/KLEINER VERGLEICHE
-console.log("\n--- Größer/Kleiner ---");
-console.log("5 > 3:", 5 > 3); // true
-console.log("5 < 3:", 5 < 3); // false
-console.log("5 >= 5:", 5 >= 5); // true (größer oder gleich)
-console.log("5 <= 5:", 5 <= 5); // true (kleiner oder gleich)
-
-// ⚠️ VORSICHT bei String-Vergleichen
-console.log("\n--- String-Vergleiche ---");
-console.log("'10' > '9':", "10" > "9"); // ❌ false (lexikografisch: '1' < '9')
-console.log("10 > 9:", 10 > 9); // ✅ true (numerisch)
-console.log("'apple' < 'banana':", "apple" < "banana"); // true (alphabetisch)
-
-// OBJEKT-VERGLEICHE (Referenzen!)
-console.log("\n--- Objekt-Vergleiche ---");
-let obj1 = { name: "Max" };
-let obj2 = { name: "Max" };
-let obj3 = obj1;
-
-console.log("obj1 === obj2:", obj1 === obj2); // ❌ false (verschiedene Referenzen!)
-console.log("obj1 === obj3:", obj1 === obj3); // ✅ true (gleiche Referenz)
-
-// 💡 WICHTIG FÜR REACT:
-// Objekte immer mit === vergleichen (Referenzgleichheit)
-// Für tiefe Vergleiche: JSON.stringify() oder Bibliotheken wie lodash
-
-// ============================================
-// LOGISCHE OPERATOREN
-// ============================================
-
-console.log("\n--- Logische Operatoren ---");
-
-let a = true;
-let b = false;
-
-// UND-OPERATOR (&&) - Beide müssen true sein
-console.log("true && true:", true && true); // true
-console.log("true && false:", true && false); // false
-console.log("false && false:", false && false); // false
-console.log("a && b:", a && b); // false
-
-// ODER-OPERATOR (||) - Mindestens einer muss true sein
-console.log("\ntrue || true:", true || true); // true
-console.log("true || false:", true || false); // true
-console.log("false || false:", false || false); // false
-console.log("a || b:", a || b); // true
-
-// NICHT-OPERATOR (!) - Negation
-console.log("\n!true:", !true); // false
-console.log("!false:", !false); // true
-console.log("!a:", !a); // false
-console.log("!!a:", !!a); // true (doppelte Negation = zu Boolean konvertieren)
-
-// SHORT-CIRCUIT EVALUATION
-console.log("\n--- Short-Circuit Evaluation ---");
-
-// && stoppt beim ersten false
-let result1 = false && console.log("Wird nicht ausgeführt");
-console.log("Result:", result1); // false (console.log wird übersprungen)
-
-let result2 = true && "Zweiter Wert";
-console.log("Result:", result2); // "Zweiter Wert"
-
-// || stoppt beim ersten true
-let result3 = true || console.log("Wird nicht ausgeführt");
-console.log("Result:", result3); // true
-
-let result4 = false || "Zweiter Wert";
-console.log("Result:", result4); // "Zweiter Wert"
-
-// PRAKTISCHE ANWENDUNG: Default-Werte
-console.log("\n--- Default-Werte mit || ---");
-let username = "";
-let displayName = username || "Gast"; // Wenn username leer, dann "Gast"
-console.log("Display Name:", displayName); // "Gast"
-
-let username2 = "Max";
-let displayName2 = username2 || "Gast";
-console.log("Display Name 2:", displayName2); // "Max"
-
-// ⚠️ PROBLEM: || behandelt 0, "", false als falsy
-let count = 0;
-let displayCount = count || "Keine"; // ❌ 0 wird als falsy behandelt
-console.log("Count:", displayCount); // "Keine" (nicht das was wir wollen!)
-
-// ✅ LÖSUNG: Nullish Coalescing (??)
-let displayCount2 = count ?? "Keine"; // Nur bei null/undefined
-console.log("Count 2:", displayCount2); // 0 (richtig!)
-
-// 💡 WICHTIG FÜR REACT:
-// Conditional Rendering mit &&
-// {isLoggedIn && <UserProfile />}
-// {users.length > 0 && <UserList />}
-
-// TRUTHY & FALSY WERTE
-console.log("\n--- Truthy & Falsy Werte ---");
-
-// FALSY-WERTE (werden zu false konvertiert):
-console.log("Boolean(false):", Boolean(false)); // false
-console.log("Boolean(0):", Boolean(0)); // false
-console.log("Boolean(''):", Boolean("")); // false
-console.log("Boolean(null):", Boolean(null)); // false
-console.log("Boolean(undefined):", Boolean(undefined)); // false
-console.log("Boolean(NaN):", Boolean(NaN)); // false
 
 /*
-zur Filterung von nur wahren Werten:
-const items = [null, "Banane", "", "Apfel", undefined];
-const validItems = items.filter(Boolean);
-console.log(validItems); // ["Banane", "Apfel"]
+🎯 LERNZIEL: Nach diesem Kapitel verstehst du die 5 kritischen Operatoren-Konzepte,
+die du für React JEDEN TAG brauchst.
+
+Fokus: Nicht alles wissen, sondern das Wichtige RICHTIG verstehen.
 */
 
-// TRUTHY-WERTE (alles andere wird zu true):
-console.log("Boolean(1):", Boolean(1)); // true
-console.log("Boolean('text'):", Boolean("text")); // true
-console.log("Boolean([]):", Boolean([])); // true
-console.log("Boolean({}):", Boolean({})); // true
-console.log("Boolean('0'):", Boolean("0")); // true (String "0" ist truthy!)
-
 // ============================================
-// TERNÄRER OPERATOR (? :)
+// KONZEPT 1: TYPE COERCION
+// Das größte "Aha!"-Moment
 // ============================================
 
-console.log("\n--- Ternärer Operator ---");
+/*
+KERNPROBLEM: JavaScript konvertiert Typen automatisch - manchmal überraschend!
 
-// SYNTAX: condition ? wertWennTrue : wertWennFalse
+REGEL FÜR +:
+→ String dabei? Alle werden zu String (Verkettung)
+→ Kein String? Alle werden zu Number (Addition)
 
-let alter = 20;
-let status = alter >= 18 ? "Erwachsen" : "Minderjährig";
-console.log("Status:", status); // "Erwachsen"
+REGEL FÜR - * / %:
+→ IMMER Number-Konvertierung (keine Ausnahmen)
+*/
 
-// VERGLEICH MIT IF-ELSE
-let status2;
-if (alter >= 18) {
-  status2 = "Erwachsen";
+// ──────────── String + Number ────────────
+console.log(5 + "5"); // "55" (5 wird zu "5", dann verketten)
+console.log("Summe: " + 10); // "Summe: 10" (String-Verkettung)
+
+// ──────────── Number - String ────────────
+console.log("10" - 5); // 5 ("10" wird zu 10, dann rechnen)
+console.log("10" * "2"); // 20 (beide zu Number)
+console.log("20" / "4"); // 5 (beide zu Number)
+
+// ──────────── Reihenfolge ist kritisch! ────────────
+console.log(5 + 5 + "5"); // "105"
+// Schritt 1: 5 + 5 = 10
+// Schritt 2: 10 + "5" = "105"
+
+console.log("5" + 5 + 5); // "555"
+// Schritt 1: "5" + 5 = "55"
+// Schritt 2: "55" + 5 = "555"
+
+// ──────────── Konvertierung zu Number ────────────
+console.log(true + true); // 2 (true wird zu 1)
+console.log(null * 5); // 0 (null wird zu 0)
+console.log(undefined + 5); // NaN (undefined wird zu NaN)
+
+// 💡 WARUM IST DAS FÜR REACT WICHTIG?
+// → User-Input ist immer String: <input value={value} />
+// → Du musst konvertieren: Number(value) oder +value
+// → Berechnungen können sonst zu "55" statt 10 führen
+
+// ============================================
+// KONZEPT 2: VERGLEICHE (=== vs ==)
+// Der wichtigste Unterschied
+// ============================================
+
+/*
+KERNPROBLEM: == konvertiert Typen automatisch → unpredictable
+LÖSUNG: IMMER === verwenden (strikte Gleichheit)
+
+REGEL:
+=== prüft Typ UND Wert
+== konvertiert erst, dann vergleicht (GEFÄHRLICH!)
+*/
+
+// ──────────── Loose Equality (==) - NICHT VERWENDEN! ────────────
+console.log(5 == "5"); // true (String wird zu Number)
+console.log(0 == false); // true (false wird zu 0)
+console.log("" == false); // true (beide werden zu 0)
+console.log(null == undefined); // true (Spezialfall)
+
+// ──────────── Strict Equality (===) - IMMER VERWENDEN! ────────────
+console.log(5 === "5"); // false (Number !== String)
+console.log(0 === false); // false (Number !== Boolean)
+console.log("" === false); // false (String !== Boolean)
+console.log(null === undefined); // false (verschiedene Typen)
+
+// ──────────── Richtige Verwendung ────────────
+console.log(5 === 5); // true (gleicher Typ, gleicher Wert)
+console.log("Hi" === "Hi"); // true
+
+// Ungleichheit
+console.log(5 !== "5"); // true (verwende !==, nicht !=)
+console.log(5 !== 6); // true
+
+// Andere Vergleiche (konvertieren auch zu Number)
+console.log(10 > 5); // true
+console.log("10" > 5); // true ("10" wird zu 10)
+console.log("10" > "9"); // false! (String-Vergleich: "1" < "9")
+
+// 💡 WARUM IST DAS FÜR REACT WICHTIG?
+// → Props vergleichen: if (user.role === "admin")
+// → State vergleichen: if (count === 0)
+// → Event-Handler: onClick={() => id === activeId}
+// → Ein einziger == Bug kann Stunden Debugging kosten!
+
+// ============================================
+// KONZEPT 3: LOGISCHE OPERATOREN (&& ||)
+// Sie geben WERTE zurück, nicht Boolean!
+// ============================================
+
+/*
+KERNPROBLEM: && und || geben nicht true/false zurück!
+Sie geben den Original-Wert zurück!
+
+&& (UND) - Der Pessimist:
+→ Stoppt beim ersten falsy Wert
+→ Gibt diesen Wert zurück (nicht false!)
+→ Wenn alle truthy: gibt letzten Wert zurück
+
+|| (ODER) - Der Optimist:
+→ Stoppt beim ersten truthy Wert
+→ Gibt diesen Wert zurück (nicht true!)
+→ Wenn alle falsy: gibt letzten Wert zurück
+*/
+
+// ──────────── && Beispiele ────────────
+console.log(true && "Hallo"); // "Hallo" (nicht true!)
+console.log("" && "Hallo"); // "" (stoppt bei falsy)
+console.log("Hi" && "Welt"); // "Welt" (beide truthy → letzter)
+console.log(0 && 100); // 0 (stoppt bei falsy)
+console.log(null && "Test"); // null (stoppt bei falsy)
+
+// ──────────── || Beispiele ────────────
+console.log(false || "Hallo"); // "Hallo" (erster truthy)
+console.log("" || "Default"); // "Default" (erster truthy)
+console.log("Hi" || "Hallo"); // "Hi" (stoppt bei truthy)
+console.log(0 || 100); // 100 (erster truthy)
+console.log(null || undefined); // undefined (beide falsy → letzter)
+
+// ──────────── Falsy vs Truthy ────────────
+// FALSY (6 Werte):
+// false, 0, "", null, undefined, NaN
+
+// TRUTHY (alles andere!):
+console.log(Boolean("0")); // true (String "0" ist truthy!)
+console.log(Boolean([])); // true (leeres Array ist truthy!)
+console.log(Boolean({})); // true (leeres Objekt ist truthy!)
+console.log(Boolean(-1)); // true (negative Zahlen sind truthy!)
+
+// ──────────── Praktische Anwendung ────────────
+// Default-Wert mit ||
+let username = "";
+let displayName = username || "Gast"; // "Gast" (weil "" falsy ist)
+console.log(displayName);
+
+// Kurzschluss-Auswertung (Short-Circuit)
+let user = null;
+let name = user && user.name; // null (stoppt bei user, kein Fehler!)
+console.log(name);
+
+// 💡 WARUM IST DAS FÜR REACT WICHTIG?
+// → Conditional Rendering: isLoggedIn && <Profile />
+// → Default-Werte: title || "Untitled"
+// → Sichere Property-Zugriffe: user && user.name
+// → Verhindert Fehler: items.length > 0 && items.map(...)
+
+// ============================================
+// KONZEPT 4: NULLISH COALESCING (??)
+// Der bessere || für Default-Werte
+// ============================================
+
+/*
+KERNPROBLEM: || behandelt 0, "", false als "nicht vorhanden"
+LÖSUNG: ?? interessiert sich NUR für null und undefined
+
+REGEL:
+|| → ersetzt alle falsy Werte (0, "", false, null, undefined, NaN)
+?? → ersetzt nur nullish Werte (null, undefined)
+*/
+
+// ──────────── Problem mit || ────────────
+let count = 0;
+console.log(count || "Keine"); // "Keine" ❌ (0 ist gültig!)
+
+let text = "";
+console.log(text || "Leer"); // "Leer" ❌ ("" ist gültig!)
+
+let isActive = false;
+console.log(isActive || true); // true ❌ (false ist gültig!)
+
+// ──────────── Lösung mit ?? ────────────
+console.log(count ?? "Keine"); // 0 ✅ (0 ist nicht nullish)
+console.log(text ?? "Leer"); // "" ✅ ("" ist nicht nullish)
+console.log(isActive ?? true); // false ✅ (false ist nicht nullish)
+
+console.log(null ?? "Default"); // "Default" ✅ (null ist nullish)
+console.log(undefined ?? "Default"); // "Default" ✅ (undefined ist nullish)
+
+// ──────────── Wann was verwenden? ────────────
+// Verwende || wenn:
+// → Du wirklich alle falsy Werte ersetzen willst
+let greeting = userGreeting || "Hallo"; // "" soll zu "Hallo" werden
+
+// Verwende ?? wenn:
+// → 0, "", false sind gültige Werte
+let defaultCount = userCount ?? 0; // 0 soll 0 bleiben
+let showTitle = title ?? "Untitled"; // "" soll "" bleiben
+
+// 💡 WARUM IST DAS FÜR REACT WICHTIG?
+// → Props mit Default-Werten: const size = props.size ?? "medium"
+// → Verhindert Bugs: count ?? 0 (nicht count || 0)
+// → API-Responses: data.value ?? fallbackValue
+
+// ============================================
+// KONZEPT 5: TERNÄRER OPERATOR (? :)
+// if-else in einer Zeile
+// ============================================
+
+/*
+SYNTAX: bedingung ? wennTrue : wennFalse
+
+REGEL:
+→ Perfekt für einfache if-else
+→ Gibt immer einen Wert zurück (gut für Zuweisungen)
+→ Nicht zu tief verschachteln (max. 1 Ebene)
+*/
+
+// ──────────── Basis-Verwendung ────────────
+let age = 20;
+let status = age >= 18 ? "Erwachsen" : "Minderjährig";
+console.log(status); // "Erwachsen"
+
+// ──────────── In Berechnungen ────────────
+let price = 100;
+let discount = 10;
+let finalPrice = discount > 0 ? price * 0.9 : price;
+console.log(finalPrice); // 90
+
+// ──────────── Mit Strings ────────────
+let items = 3;
+let message = items === 1 ? "1 Item" : `${items} Items`;
+console.log(message); // "3 Items"
+
+// ──────────── Vergleich mit if-else ────────────
+// Ternär (besser für Zuweisung):
+let result = condition ? "A" : "B";
+
+// If-else (besser für Logik):
+let result2;
+if (condition) {
+  result2 = "A";
 } else {
-  status2 = "Minderjährig";
+  result2 = "B";
 }
-console.log("Status 2:", status2); // "Erwachsen"
 
-// VERSCHACHTELTE TERNÄRE OPERATOREN (sparsam verwenden!)
-let punkte = 75;
-let note = punkte >= 90 ? "A" : punkte >= 80 ? "B" : punkte >= 70 ? "C" : punkte >= 60 ? "D" : "F";
-console.log("Note:", note); // "C"
+// ──────────── ⚠️ VORSICHT: Zu viele Verschachtelungen ────────────
+// ❌ Unleserlich:
+let grade = score >= 90 ? "A" : score >= 80 ? "B" : score >= 70 ? "C" : "F";
 
-// ⚠️ Zu viele Verschachtelungen = unleserlich!
-// ✅ Besser: if-else oder switch verwenden bei komplexer Logik
+// ✅ Besser: if-else verwenden
+let grade2;
+if (score >= 90) grade2 = "A";
+else if (score >= 80) grade2 = "B";
+else if (score >= 70) grade2 = "C";
+else grade2 = "F";
 
-// PRAKTISCHE ANWENDUNGEN
-console.log("\n--- Praktische Beispiele ---");
-
-// In String-Templates
-let name = "Max";
-console.log(`Hallo ${name.length > 5 ? "langer" : "kurzer"} Name!`);
-
-// Für Default-Werte
-let userInput = "";
-let finalValue = userInput ? userInput : "Standard";
-console.log("Final Value:", finalValue); // "Standard"
-
-// Inline-Berechnungen
-let preis = 100;
-let rabatt = 10;
-let endpreis = rabatt > 0 ? preis - (preis * rabatt) / 100 : preis;
-console.log("Endpreis:", endpreis); // 90
-
-// 💡 WICHTIG FÜR REACT:
-// Ternärer Operator ist SEHR häufig in JSX!
-// {isLoading ? <Spinner /> : <Content />}
-// {error ? <ErrorMessage /> : null}
-// className={isActive ? 'active' : 'inactive'}
+// 💡 WARUM IST DAS FÜR REACT WICHTIG?
+// → JSX: {isLoading ? <Spinner /> : <Content />}
+// → Dynamische Props: <Button disabled={!isValid ? true : false} />
+// → Styles: className={isActive ? "active" : "inactive"}
+// → Texte: {count} {count === 1 ? "Item" : "Items"}
 
 // ============================================
-// OPERATOR-RANGFOLGE (Precedence)
+// BONUS: WEITERE WICHTIGE OPERATOREN
+// (Kurz & prägnant)
 // ============================================
 
-console.log("\n--- Operator-Rangfolge ---");
+// ──────────── Modulo (%) - Rest der Division ────────────
+console.log(10 % 3); // 2 (Rest von 10÷3)
+console.log(7 % 2); // 1 (gerade/ungerade prüfen)
 
-// Multiplikation vor Addition
-console.log("2 + 3 * 4:", 2 + 3 * 4); // 14 (nicht 20!)
+// Praktisch:
+let isEven = 8 % 2 === 0; // true (gerade Zahl)
+let isOdd = 7 % 2 !== 0; // true (ungerade Zahl)
 
-// Klammern ändern Rangfolge
-console.log("(2 + 3) * 4:", (2 + 3) * 4); // 20
+// ──────────── Potenz (**) ────────────
+console.log(2 ** 3); // 8 (2³)
+console.log(5 ** 2); // 25 (5²)
 
-// && vor ||
-console.log("true || false && false:", true || (false && false)); // true
-// Wird gelesen als: true || (false && false)
+// ──────────── Increment/Decrement (++ --) ────────────
+let x = 5;
+console.log(x++); // 5 (gibt zurück, DANN erhöht)
+console.log(x); // 6
 
-// Klammern für Klarheit
-console.log("(true || false) && false:", (true || false) && false); // false
+console.log(++x); // 7 (erst erhöht, DANN zurück)
+console.log(x); // 7
 
-// ✅ BESTE PRAXIS: Klammern verwenden für Klarheit!
-let komplexerAusdruck = (alter >= 18 && alter < 65) || status === "Student";
+// ⚠️ In React: NIEMALS für State verwenden!
+// ❌ count++
+// ✅ setCount(count + 1)
+
+// ──────────── Assignment-Operatoren (+=, -=, *=, /=) ────────────
+let value = 10;
+value += 5; // value = value + 5 → 15
+value -= 3; // value = value - 3 → 12
+value *= 2; // value = value * 2 → 24
+value /= 4; // value = value / 4 → 6
+
+// ⚠️ In React: NIEMALS für State verwenden!
+// ❌ state += 1
+// ✅ setState(state + 1)
+
+// ──────────── Negation (!) ────────────
+console.log(!true); // false
+console.log(!false); // true
+console.log(!!5); // true (zu Boolean konvertieren)
+console.log(!!""); // false
 
 // ============================================
 // ZUSAMMENFASSUNG
+// Die 5 kritischen Konzepte
 // ============================================
 
 /*
-ARITHMETISCHE OPERATOREN:
-✅ +, -, *, /, % (Modulo), ** (Potenz)
-✅ ++ (Inkrement), -- (Dekrement)
-✅ Vorsicht: "5" + 3 = "53" (String-Konkatenation!)
+┌─────────────────────────────────────────────────────────────┐
+│ 1. TYPE COERCION                                            │
+├─────────────────────────────────────────────────────────────┤
+│ + mit String → Verkettung        │ "5" + 5 = "55"          │
+│ - * / % → immer Number           │ "5" - 5 = 0             │
+│ Reihenfolge beachten!            │ 5+5+"5" vs "5"+5+5      │
+└─────────────────────────────────────────────────────────────┘
 
-ZUWEISUNGSOPERATOREN:
-✅ =, +=, -=, *=, /=, %=, **=
-✅ Kurzschreibweise für wert = wert + x
+┌─────────────────────────────────────────────────────────────┐
+│ 2. VERGLEICHE                                               │
+├─────────────────────────────────────────────────────────────┤
+│ === IMMER verwenden              │ 5 === "5" ist false     │
+│ == NIEMALS verwenden             │ 5 == "5" ist true ❌    │
+│ !== für Ungleichheit             │ 5 !== "5" ist true      │
+└─────────────────────────────────────────────────────────────┘
 
-VERGLEICHSOPERATOREN:
-✅ IMMER === statt == verwenden (strikte Gleichheit)
-✅ !==, >, <, >=, <=
-✅ Objekte werden per Referenz verglichen
+┌─────────────────────────────────────────────────────────────┐
+│ 3. LOGISCHE OPERATOREN                                      │
+├─────────────────────────────────────────────────────────────┤
+│ && stoppt bei falsy              │ "" && "Hi" = ""         │
+│ || stoppt bei truthy             │ "" || "Hi" = "Hi"       │
+│ Geben Werte zurück, nicht Bool!  │ true && "x" = "x"       │
+│ Falsy: false,0,"",null,undef,NaN │ Boolean([]) = true      │
+└─────────────────────────────────────────────────────────────┘
 
-LOGISCHE OPERATOREN:
-✅ && (UND), || (ODER), ! (NICHT)
-✅ Short-Circuit Evaluation nutzen
-✅ ?? (Nullish Coalescing) für bessere Default-Werte
-✅ Truthy/Falsy Werte kennen
+┌─────────────────────────────────────────────────────────────┐
+│ 4. NULLISH COALESCING                                       │
+├─────────────────────────────────────────────────────────────┤
+│ ?? nur für null/undefined        │ 0 ?? 10 = 0             │
+│ || für alle falsy                │ 0 || 10 = 10            │
+│ Verwende ?? für Default-Werte    │ count ?? 0              │
+└─────────────────────────────────────────────────────────────┘
 
-TERNÄRER OPERATOR:
-✅ condition ? wennTrue : wennFalse
-✅ Perfekt für JSX in React
-✅ Nicht zu tief verschachteln
+┌─────────────────────────────────────────────────────────────┐
+│ 5. TERNÄRER OPERATOR                                        │
+├─────────────────────────────────────────────────────────────┤
+│ condition ? true : false         │ age >= 18 ? "ja" : "nein"│
+│ Gut für Zuweisungen              │ let x = a ? b : c        │
+│ Nicht zu tief verschachteln!     │ Max. 1 Ebene            │
+└─────────────────────────────────────────────────────────────┘
 
-BEST PRACTICES:
-✅ === statt == (immer!)
-✅ Klammern für Klarheit verwenden
-✅ ?? statt || für Default-Werte (wenn 0 oder "" gültig sind)
-✅ Ternärer Operator für einfache Bedingungen
-✅ if-else für komplexe Logik
+
+HÄUFIGE FEHLER (und wie man sie vermeidet):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+❌ "5" + 5 erwarten 10            → Konvertiere: Number("5") + 5
+❌ 5 == "5" verwenden             → IMMER === verwenden
+❌ 0 && <Component>               → 0 wird gerendert! Besser: length > 0 &&
+❌ count || 0 als Default         → Ersetzt auch count=0! Besser: count ?? 0
+❌ Zu viele ternäre Operatoren    → Ab 2 Ebenen if-else verwenden
+
+
+DEBUGGING-TIPPS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+→ typeof prüfen:                   console.log(typeof value)
+→ Beide Seiten ausgeben:           console.log(a, typeof a, b, typeof b)
+→ Boolean-Konvertierung testen:    console.log(!!value)
+→ Zwischenergebnisse loggen:       const result = a && b; console.log(result)
+
+
+VORBEREITUNG FÜR REACT:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Diese Operatoren wirst du in React JEDEN TAG verwenden:
+
+→ && für Conditional Rendering:    {isLoggedIn && <Profile />}
+→ || für Default-Werte:            {title || "Untitled"}
+→ ?? für Props:                    {count ?? 0}
+→ Ternär für Either/Or:            {loading ? <Spinner /> : <Content />}
+→ === für Vergleiche:              {id === activeId ? "active" : ""}
+
+Merke: Keine direkte State-Mutation!
+❌ count++, state += 1
+✅ setCount(count + 1), setState(state + 1)
 */
 
-console.log("\n✅ 1.3 Operatoren abgeschlossen!");
+console.log("\n✅ Operatoren abgeschlossen!");
+console.log("💡 Diese 5 Konzepte sind deine Basis für React!");

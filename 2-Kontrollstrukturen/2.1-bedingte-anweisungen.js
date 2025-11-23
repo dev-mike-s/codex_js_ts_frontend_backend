@@ -1,523 +1,485 @@
 // ============================================
 // 2.1 BEDINGTE ANWEISUNGEN
+// Vorbereitung für React
 // ============================================
 
-// ============================================
-// IF-ANWEISUNG (einfach)
-// ============================================
+/*
+🎯 LERNZIEL: Nach diesem Kapitel verstehst du die 4 kritischen Patterns
+für Bedingungen, die du für React JEDEN TAG brauchst.
 
-let alter = 20;
-
-if (alter >= 18) {
-  console.log("Du bist volljährig"); // ✅ Wird ausgeführt
-}
-
-// Mehrere Statements im Block
-if (alter >= 18) {
-  console.log("Zugriff gewährt");
-  console.log("Willkommen!");
-}
+Fokus: Ternärer Operator (JSX!), Guard Clauses, Truthy/Falsy, Switch (Reducers)
+*/
 
 // ============================================
-// IF-ELSE (Entweder-Oder)
+// KONZEPT 1: TERNÄRER OPERATOR
+// Der wichtigste Conditional für React
 // ============================================
 
-let temperatur = 15;
+/*
+KERNPROBLEM: if-else funktioniert nicht direkt in JSX
+LÖSUNG: Ternärer Operator für Expressions
 
-if (temperatur > 25) {
-  console.log("Es ist warm");
-} else {
-  console.log("Es ist kühl"); // ✅ Wird ausgeführt
-}
+REGEL:
+→ Syntax: bedingung ? wennTrue : wennFalse
+→ Gibt immer einen Wert zurück (Expression!)
+→ Perfekt für JSX, max. 1 Verschachtelung
+→ Bei komplexer Logik: vor dem return verwenden
+*/
 
-// Praktisches Beispiel: Gerade/Ungerade
-let zahl = 7;
+// ──────────── Basis-Verwendung ────────────
+let age = 20;
+let status = age >= 18 ? "Erwachsen" : "Minderjährig";
+console.log(status); // "Erwachsen"
 
-if (zahl % 2 === 0) {
-  console.log(zahl, "ist gerade");
-} else {
-  console.log(zahl, "ist ungerade"); // ✅
-}
-
-// ============================================
-// IF-ELSE IF-ELSE (Mehrere Bedingungen)
-// ============================================
-
-let punkte = 75;
-
-if (punkte >= 90) {
-  console.log("Note: A");
-} else if (punkte >= 80) {
-  console.log("Note: B");
-} else if (punkte >= 70) {
-  console.log("Note: C"); // ✅ Wird ausgeführt
-} else if (punkte >= 60) {
-  console.log("Note: D");
-} else {
-  console.log("Note: F");
-}
-
-// Wichtig: Nur der ERSTE zutreffende Block wird ausgeführt!
-let score = 95;
-
-if (score >= 50) {
-  console.log("Bestanden"); // ✅ Stoppt hier, obwohl auch >= 90 zutrifft
-} else if (score >= 90) {
-  console.log("Sehr gut"); // Wird NICHT erreicht
-}
-
-// ✅ BESSER: Vom Spezifischen zum Allgemeinen
-if (score >= 90) {
-  console.log("Sehr gut"); // ✅ Wird ausgeführt
-} else if (score >= 50) {
-  console.log("Bestanden");
-}
-
-// ============================================
-// VERSCHACHTELTE IF-STATEMENTS
-// ============================================
-
-console.log("\n--- Verschachtelte IFs ---");
-
-let istAngemeldet = true;
-let hatRechte = true;
-let istAdmin = false;
-
-if (istAngemeldet) {
-  console.log("Benutzer ist angemeldet");
-
-  if (hatRechte) {
-    console.log("Zugriff gewährt"); // ✅
-
-    if (istAdmin) {
-      console.log("Admin-Panel verfügbar");
-    } else {
-      console.log("Standard-Benutzer"); // ✅
-    }
-  } else {
-    console.log("Keine Rechte");
-  }
-} else {
-  console.log("Bitte anmelden");
-}
-
-// ✅ BESSER: Kombiniere mit logischen Operatoren (lesbarer!)
-if (istAngemeldet && hatRechte) {
-  console.log("Zugriff gewährt (kombiniert)"); // ✅
-}
-
-if (istAngemeldet && hatRechte && istAdmin) {
-  console.log("Admin-Zugriff");
-}
-
-// EARLY RETURN Pattern (häufig in Funktionen)
-function prüfeZugriff(angemeldet, rechte) {
-  if (!angemeldet) {
-    console.log("Nicht angemeldet");
-    return; // Früher Ausstieg
-  }
-
-  if (!rechte) {
-    console.log("Keine Rechte");
-    return; // Früher Ausstieg
-  }
-
-  // Hauptlogik nur wenn alles OK
-  console.log("Zugriff gewährt");
-}
-
-prüfeZugriff(true, false);
-
-// ============================================
-// IF OHNE GESCHWEIFTE KLAMMERN
-// ============================================
-
-let x = 10;
-
-// Funktioniert für EINE Zeile
-if (x > 5) console.log("Größer als 5"); // ✅
-
-// ⚠️ ABER VORSICHT: Kann zu Bugs führen!
-if (x > 5) console.log("Zeile 1");
-console.log("Zeile 2"); // ❌ Wird IMMER ausgeführt (nicht Teil des if!)
-
-// ✅ BESTE PRAXIS: IMMER geschweifte Klammern verwenden!
-if (x > 5) {
-  console.log("Zeile 1");
-  console.log("Zeile 2"); // ✅ Beide nur wenn Bedingung wahr
-}
-
-// ============================================
-// TRUTHY & FALSY in IF-Bedingungen
-// ============================================
-
-console.log("\n--- Truthy/Falsy in Bedingungen ---");
-
-// FALSY-WERTE: false, 0, "", null, undefined, NaN
-let username = "Max";
-if (username) {
-  // String mit Inhalt = truthy
-  console.log("Benutzername vorhanden:", username); // ✅
-}
-
-let emptyString = "";
-if (emptyString) {
-  // Leerer String = falsy
-  console.log("Wird nicht ausgeführt");
-} else {
-  console.log("String ist leer"); // ✅
-}
-
-// Prüfe auf undefined/null
-let user;
-if (user) {
-  console.log("User existiert");
-} else {
-  console.log("User ist undefined"); // ✅
-}
-
-// Prüfe auf 0
-let count = 0;
-if (count) {
-  console.log("Count ist truthy");
-} else {
-  console.log("Count ist 0 (falsy)"); // ✅
-}
-
-// ⚠️ PROBLEM: 0 ist eine gültige Zahl, wird aber als falsy behandelt!
-// ✅ LÖSUNG: Explizit vergleichen
-if (count !== undefined && count !== null) {
-  console.log("Count existiert:", count); // ✅ Auch bei 0!
-}
-
-// Oder mit Nullish Coalescing
-let displayCount = count ?? "Keine Daten";
-console.log("Display:", displayCount); // 0 (nicht "Keine Daten")
-
-// ============================================
-// VERGLEICHSOPERATOREN IN BEDINGUNGEN
-// ============================================
-
-console.log("\n--- Vergleiche in if ---");
-
-let a = 5;
-let b = "5";
-
-// Lose Gleichheit (==) - NICHT EMPFOHLEN!
-if (a == b) {
-  console.log("5 == '5' ist true (Typ-Konvertierung)"); // ✅
-}
-
-// ✅ STRIKTE GLEICHHEIT (===) - IMMER VERWENDEN!
-if (a === b) {
-  console.log("Wird nicht ausgeführt");
-} else {
-  console.log("5 !== '5' (verschiedene Typen)"); // ✅
-}
-
-// Größer/Kleiner Vergleiche
-let alter2 = 25;
-
-if (alter2 >= 18 && alter2 < 65) {
-  console.log("Arbeitsfähiges Alter"); // ✅
-}
-
-// ============================================
-// LOGISCHE OPERATOREN IN BEDINGUNGEN
-// ============================================
-
-console.log("\n--- Logische Operatoren ---");
-
-let istWochenende = true;
-let hatUrlaub = false;
-
-// UND (&&) - Beide müssen true sein
-if (istWochenende && hatUrlaub) {
-  console.log("Frei und entspannt");
-} else {
-  console.log("Mindestens eine Bedingung ist false"); // ✅
-}
-
-// ODER (||) - Mindestens eine muss true sein
-if (istWochenende || hatUrlaub) {
-  console.log("Freizeit!"); // ✅
-}
-
-// NICHT (!) - Negation
-if (!hatUrlaub) {
-  console.log("Kein Urlaub"); // ✅
-}
-
-// Komplexe Bedingungen
-let stunde = 14;
-let istWerktag = true;
-
-if (stunde >= 9 && stunde < 17 && istWerktag) {
-  console.log("Bürozeiten"); // ✅
-}
-
-// 💡 WICHTIG FÜR REACT:
-// Conditional Rendering mit logischen Operatoren
-// {isLoggedIn && <UserProfile />}
-// {error || <DefaultMessage />}
-
-// ============================================
-// TERNÄRER OPERATOR (? :)
-// ============================================
-
-console.log("\n--- Ternärer Operator ---");
-
-// SYNTAX: condition ? wertWennTrue : wertWennFalse
-
-let alter3 = 20;
-let status = alter3 >= 18 ? "Erwachsen" : "Minderjährig";
-console.log("Status:", status); // "Erwachsen"
-
-// VERGLEICH MIT IF-ELSE
+// Vergleich mit if-else (gleicher Result, aber Statement!)
 let status2;
-if (alter3 >= 18) {
+if (age >= 18) {
   status2 = "Erwachsen";
 } else {
   status2 = "Minderjährig";
 }
-console.log("Status 2:", status2); // "Erwachsen"
 
-// Inline in console.log
-console.log("Du bist", alter3 >= 18 ? "volljährig" : "minderjährig");
-
-// In String-Templates
+// ──────────── In String-Templates ────────────
 let name = "Max";
 console.log(`Hallo ${name.length > 5 ? "langer" : "kurzer"} Name!`);
 
-// VERSCHACHTELTE TERNÄRE OPERATOREN
-let punkte2 = 75;
-let note =
-  punkte2 >= 90 ? "A" : punkte2 >= 80 ? "B" : punkte2 >= 70 ? "C" : punkte2 >= 60 ? "D" : "F";
-console.log("Note:", note); // "C"
+// ──────────── Inline-Berechnungen ────────────
+let price = 100;
+let discount = 10;
+let finalPrice = discount > 0 ? price * 0.9 : price;
+console.log("Preis:", finalPrice); // 90
 
-// ⚠️ Zu viele Verschachtelungen = unleserlich!
-// ✅ Bei komplexer Logik: if-else verwenden!
+// ──────────── ⚠️ VORSICHT: Zu viele Verschachtelungen ────────────
+let score = 75;
+// ❌ Unleserlich:
+let grade = score >= 90 ? "A" : score >= 80 ? "B" : score >= 70 ? "C" : "F";
 
-// PRAKTISCHE ANWENDUNGEN
-let userInput = "";
-let finalValue = userInput ? userInput : "Standard";
-console.log("Final Value:", finalValue); // "Standard"
+// ✅ Besser: if-else oder Logik vor dem return
+let grade2;
+if (score >= 90) grade2 = "A";
+else if (score >= 80) grade2 = "B";
+else if (score >= 70) grade2 = "C";
+else grade2 = "F";
 
-// Oder kürzer mit ||
-let finalValue2 = userInput || "Standard";
-console.log("Final Value 2:", finalValue2); // "Standard"
+// ──────────── Null zurückgeben (wichtig für React!) ────────────
+let showWarning = false;
+let warning = showWarning ? "Achtung!" : null;
+console.log(warning); // null
 
-// 💡 WICHTIG FÜR REACT:
-// Ternärer Operator ist SEHR häufig in JSX!
-// {isLoading ? <Spinner /> : <Content />}
-// {error ? <ErrorMessage /> : null}
-// className={isActive ? 'active' : 'inactive'}
+// In React: {error ? <Error /> : null} oder kürzer mit &&
+
+// 💡 WARUM IST DAS FÜR REACT WICHTIG?
+// → JSX erlaubt NUR Expressions, keine Statements
+// → Ternär ist DAS Standard-Pattern für Conditional Rendering
+// → {isLoading ? <Spinner /> : <Content />}
+// → {error ? <ErrorMessage /> : null}
+// → className={isActive ? "active" : "inactive"}
+// → {count} {count === 1 ? "Item" : "Items"}
 
 // ============================================
-// SWITCH-CASE ANWEISUNGEN
+// KONZEPT 2: && OPERATOR FÜR CONDITIONAL RENDERING
+// Die Kurzform für "Nur wenn true"
 // ============================================
 
-console.log("\n--- Switch-Case ---");
+/*
+KERNPROBLEM: Ternär mit null ist umständlich
+LÖSUNG: && gibt den zweiten Wert zurück wenn truthy
 
-let wochentag = "Montag";
+REGEL:
+→ bedingung && wert
+→ Wenn bedingung falsy: gibt bedingung zurück
+→ Wenn bedingung truthy: gibt wert zurück
+→ Perfekt für "Zeige Komponente nur wenn..."
+*/
 
-switch (wochentag) {
+// ──────────── Basis-Verwendung ────────────
+let isLoggedIn = true;
+let greeting = isLoggedIn && "Willkommen zurück!";
+console.log(greeting); // "Willkommen zurück!"
+
+isLoggedIn = false;
+greeting = isLoggedIn && "Willkommen zurück!";
+console.log(greeting); // false
+
+// ──────────── Vergleich mit ternär ────────────
+// Mit &&: kürzer
+let message1 = isLoggedIn && "Eingeloggt";
+
+// Mit ternär: länger
+let message2 = isLoggedIn ? "Eingeloggt" : null;
+
+// ──────────── ⚠️ VORSICHT: Falsy Werte werden gerendert! ────────────
+let count = 0;
+let display = count && <span>{count}</span>;
+// Problem: count ist 0 (falsy), aber 0 wird in React gerendert!
+
+// ✅ BESSER: Explizite Boolean-Konvertierung
+display = count > 0 && <span>{count}</span>;
+// Oder: !!count && <span>{count}</span>
+
+// ──────────── Praktisches Beispiel ────────────
+let items = ["A", "B", "C"];
+let list = items.length > 0 && `${items.length} Items vorhanden`;
+console.log(list); // "3 Items vorhanden"
+
+items = [];
+list = items.length > 0 && `${items.length} Items vorhanden`;
+console.log(list); // false
+
+// 💡 WARUM IST DAS FÜR REACT WICHTIG?
+// → Häufigstes Pattern für Conditional Rendering
+// → {isLoggedIn && <UserProfile />}
+// → {items.length > 0 && <ItemList items={items} />}
+// → {error && <ErrorBanner message={error} />}
+// → ACHTUNG: {count && ...} kann 0 rendern!
+
+// ============================================
+// KONZEPT 3: TRUTHY/FALSY & GUARD CLAUSES
+// Defensive Programmierung für React
+// ============================================
+
+/*
+KERNPROBLEM: null/undefined führen zu Fehlern
+LÖSUNG: Guard Clauses für frühes Abbrechen
+
+REGEL:
+→ Falsy: false, 0, "", null, undefined, NaN
+→ Alles andere: truthy
+→ Guard Clauses: Fehler-Fälle zuerst prüfen
+→ Hauptlogik nur wenn alles OK
+*/
+
+// ──────────── Falsy Werte ────────────
+console.log(Boolean(false)); // false
+console.log(Boolean(0)); // false
+console.log(Boolean("")); // false
+console.log(Boolean(null)); // false
+console.log(Boolean(undefined)); // false
+console.log(Boolean(NaN)); // false
+
+// ──────────── Truthy Werte (ACHTUNG!) ────────────
+console.log(Boolean("0")); // true (String!)
+console.log(Boolean([])); // true (Array!)
+console.log(Boolean({})); // true (Objekt!)
+console.log(Boolean(-1)); // true (negative Zahl!)
+
+// ──────────── Guard Clauses Pattern ────────────
+function processData(data) {
+  // Guard 1: Prüfe auf null/undefined
+  if (!data) {
+    console.log("Keine Daten");
+    return;
+  }
+
+  // Guard 2: Prüfe auf leeres Array
+  if (!Array.isArray(data) || data.length === 0) {
+    console.log("Leeres Array");
+    return;
+  }
+
+  // Hauptlogik nur wenn alle Guards bestanden
+  console.log(`Verarbeite ${data.length} Items`);
+  data.forEach((item) => console.log(item));
+}
+
+processData([1, 2, 3]); // ✅ Funktioniert
+processData(null); // Guard 1
+processData([]); // Guard 2
+
+// ──────────── Vergleich: Mit vs. Ohne Guards ────────────
+// ❌ Ohne Guards: Tiefe Verschachtelung
+function badProcess(data) {
+  if (data) {
+    if (Array.isArray(data)) {
+      if (data.length > 0) {
+        // Hauptlogik tief verschachtelt
+        console.log("Verarbeite");
+      }
+    }
+  }
+}
+
+// ✅ Mit Guards: Flacher, lesbarer
+function goodProcess(data) {
+  if (!data) return;
+  if (!Array.isArray(data)) return;
+  if (data.length === 0) return;
+
+  // Hauptlogik auf oberster Ebene
+  console.log("Verarbeite");
+}
+
+// ──────────── Optional Chaining (moderne Alternative) ────────────
+let user = null;
+
+// Alt: Verschachtelte Checks
+if (user && user.address && user.address.city) {
+  console.log(user.address.city);
+}
+
+// Neu: Optional Chaining
+console.log(user?.address?.city); // undefined (kein Fehler!)
+
+// 💡 WARUM IST DAS FÜR REACT WICHTIG?
+// → Props können null/undefined sein
+// → Guard Clauses am Anfang der Komponente
+// → if (!data) return null; (Early Return)
+// → Optional Chaining: user?.name statt user && user.name
+// → Verhindert "Cannot read property of undefined" Fehler
+
+// ============================================
+// KONZEPT 4: SWITCH-CASE FÜR REDUCERS
+// Das Pattern für State Management
+// ============================================
+
+/*
+KERNPROBLEM: Viele if-else bei Actions unübersichtlich
+LÖSUNG: switch-case für klare Action-Zuordnung
+
+REGEL:
+→ Gut für viele exakte Vergleiche (===)
+→ break nicht vergessen (sonst Fall-Through)
+→ default für unbekannte Actions
+→ Standard-Pattern in Redux/useReducer
+*/
+
+// ──────────── Basis-Verwendung ────────────
+let day = "Montag";
+
+switch (day) {
   case "Montag":
-    console.log("Start der Woche"); // ✅
-    break; // Wichtig! Sonst läuft es weiter
+    console.log("Start der Woche");
+    break;
   case "Freitag":
     console.log("Fast Wochenende");
     break;
   case "Samstag":
-  case "Sonntag": // Mehrere Cases für gleichen Code
+  case "Sonntag": // Mehrere Cases
     console.log("Wochenende!");
     break;
-  default: // Optional: wenn nichts passt
-    console.log("Ein normaler Tag");
+  default:
+    console.log("Normaler Tag");
 }
 
-// ⚠️ OHNE BREAK - Fall-Through!
-console.log("\n--- Fall-Through Beispiel ---");
+// ──────────── ⚠️ VORSICHT: Fall-Through ohne break ────────────
+let grade = "B";
 
-let note2 = "B";
-
-switch (note2) {
+switch (grade) {
   case "A":
     console.log("Ausgezeichnet");
   // Kein break! Fällt durch
   case "B":
-    console.log("Gut"); // ✅
+    console.log("Gut"); // ✅ Wird ausgeführt
   // Kein break! Fällt durch
   case "C":
-    console.log("Bestanden"); // ✅ Wird auch ausgeführt!
-    break;
-  case "D":
-  case "F":
-    console.log("Nicht bestanden");
+    console.log("Bestanden"); // ✅ Auch ausgeführt!
     break;
 }
 
-// SWITCH mit Zahlen
-let monat = 3;
-
-switch (monat) {
-  case 1:
-    console.log("Januar");
-    break;
-  case 2:
-    console.log("Februar");
-    break;
-  case 3:
-    console.log("März"); // ✅
-    break;
-  case 12:
-    console.log("Dezember");
-    break;
-  default:
-    console.log("Anderer Monat");
+// ──────────── React Reducer Pattern ────────────
+function counterReducer(state, action) {
+  switch (action.type) {
+    case "INCREMENT":
+      return { count: state.count + 1 };
+    case "DECREMENT":
+      return { count: state.count - 1 };
+    case "RESET":
+      return { count: 0 };
+    case "SET":
+      return { count: action.payload };
+    default:
+      return state; // Wichtig: Immer state zurückgeben
+  }
 }
 
-// SWITCH vs. IF-ELSE
-console.log("\n--- Switch vs. If-Else ---");
+// Verwendung simulieren
+let state = { count: 5 };
+state = counterReducer(state, { type: "INCREMENT" });
+console.log(state); // { count: 6 }
 
-// ✅ SWITCH gut für: Viele exakte Vergleiche (===)
-let farbe = "rot";
+state = counterReducer(state, { type: "RESET" });
+console.log(state); // { count: 0 }
 
-switch (farbe) {
-  case "rot":
-    console.log("Stopp"); // ✅
+// ──────────── Switch vs. If-Else ────────────
+
+// ✅ SWITCH gut für: Exakte String/Number-Vergleiche
+let command = "start";
+switch (command) {
+  case "start":
+    console.log("Starten");
     break;
-  case "gelb":
-    console.log("Achtung");
+  case "stop":
+    console.log("Stoppen");
     break;
-  case "grün":
-    console.log("Los");
+  case "pause":
+    console.log("Pausieren");
     break;
 }
 
 // ✅ IF-ELSE gut für: Bereiche, komplexe Bedingungen
 let score2 = 85;
-
 if (score2 >= 90) {
   console.log("A");
 } else if (score2 >= 80) {
-  console.log("B"); // ✅ Einfacher als 10 case-Statements!
+  console.log("B"); // Einfacher als 10 case-Statements
 } else if (score2 >= 70) {
   console.log("C");
 }
 
-// SWITCH mit Strings (häufig bei Actions/Commands)
-let command = "start";
-
-switch (command) {
-  case "start":
-    console.log("Programm gestartet"); // ✅
-    break;
-  case "stop":
-    console.log("Programm gestoppt");
-    break;
-  case "pause":
-    console.log("Programm pausiert");
-    break;
-  case "reset":
-    console.log("Programm zurückgesetzt");
-    break;
-  default:
-    console.log("Unbekannter Befehl");
-}
-
-// 💡 WICHTIG FÜR REACT:
-// Switch häufig in Reducers (Redux, useReducer)
-// switch (action.type) {
-//   case 'INCREMENT': return { count: state.count + 1 };
-//   case 'DECREMENT': return { count: state.count - 1 };
-//   case 'RESET': return { count: 0 };
-//   default: return state;
-// }
+// 💡 WARUM IST DAS FÜR REACT WICHTIG?
+// → useReducer Hook verwendet switch für State-Updates
+// → Redux Reducers sind immer mit switch
+// → Klare Action-Typen: "ADD_TODO", "DELETE_TODO"
+// → default case verhindert Bugs bei unbekannten Actions
+// → Immutable Updates: return neues Objekt, nicht state mutieren
 
 // ============================================
-// GUARD CLAUSES (Defensive Programmierung)
+// BONUS: IF-ELSE BASICS (Kurzform)
 // ============================================
 
-console.log("\n--- Guard Clauses ---");
-
-function verarbeiteDaten(daten) {
-  // Guard Clause 1: Prüfe auf null/undefined
-  if (!daten) {
-    console.log("Keine Daten vorhanden");
-    return;
-  }
-
-  // Guard Clause 2: Prüfe auf leeres Array
-  if (daten.length === 0) {
-    console.log("Leeres Array");
-    return;
-  }
-
-  // Guard Clause 3: Prüfe auf falschen Typ
-  if (!Array.isArray(daten)) {
-    console.log("Keine gültige Liste");
-    return;
-  }
-
-  // Hauptlogik nur wenn alle Prüfungen bestanden
-  console.log("Verarbeite", daten.length, "Einträge");
-  daten.forEach((item) => console.log("Item:", item));
+// ──────────── Einfaches if ────────────
+let age2 = 20;
+if (age2 >= 18) {
+  console.log("Volljährig");
 }
 
-verarbeiteDaten([1, 2, 3]); // ✅ Funktioniert
-verarbeiteDaten(null); // Guard Clause 1
-verarbeiteDaten([]); // Guard Clause 2
+// ──────────── if-else ────────────
+let temp = 15;
+if (temp > 25) {
+  console.log("Warm");
+} else {
+  console.log("Kühl");
+}
 
-// ✅ VORTEIL: Code ist flacher, lesbarer
-// ❌ Ohne Guard Clauses: Tiefe Verschachtelung!
+// ──────────── if-else if-else ────────────
+let points = 75;
+if (points >= 90) {
+  console.log("A");
+} else if (points >= 80) {
+  console.log("B");
+} else if (points >= 70) {
+  console.log("C");
+} else {
+  console.log("F");
+}
+
+// ⚠️ WICHTIG: Vom Spezifischen zum Allgemeinen!
+let score3 = 95;
+
+// ❌ Falsch: Erste Bedingung wird genommen
+if (score3 >= 50) {
+  console.log("Bestanden"); // Stoppt hier!
+} else if (score3 >= 90) {
+  console.log("Sehr gut"); // Wird nie erreicht
+}
+
+// ✅ Richtig: Spezifischste Bedingung zuerst
+if (score3 >= 90) {
+  console.log("Sehr gut");
+} else if (score3 >= 50) {
+  console.log("Bestanden");
+}
+
+// ──────────── Logische Operatoren ────────────
+let isWeekend = true;
+let hasVacation = false;
+
+// && (beide müssen true sein)
+if (isWeekend && hasVacation) {
+  console.log("Frei und Urlaub");
+}
+
+// || (mindestens eine muss true sein)
+if (isWeekend || hasVacation) {
+  console.log("Freizeit!");
+}
+
+// ! (Negation)
+if (!hasVacation) {
+  console.log("Kein Urlaub");
+}
 
 // ============================================
 // ZUSAMMENFASSUNG
+// Die 4 kritischen Patterns
 // ============================================
 
 /*
-BEDINGTE ANWEISUNGEN:
+┌─────────────────────────────────────────────────────────────┐
+│ 1. TERNÄRER OPERATOR                                        │
+├─────────────────────────────────────────────────────────────┤
+│ condition ? true : false        │ Expression für JSX       │
+│ Max. 1 Verschachtelung          │ Sonst if-else verwenden  │
+│ Perfekt für inline-Conditions   │ className, text, etc.    │
+│ null als "nichts rendern"       │ error ? <Err /> : null   │
+└─────────────────────────────────────────────────────────────┘
 
-IF-ELSE:
-✅ if für einfache Bedingungen
-✅ if-else für Entweder-Oder
-✅ if-else if-else für mehrere Bedingungen
-✅ Verschachteln möglich, aber nicht übertreiben
-✅ IMMER geschweifte Klammern verwenden
-✅ Vom Spezifischen zum Allgemeinen prüfen
+┌─────────────────────────────────────────────────────────────┐
+│ 2. && OPERATOR                                              │
+├─────────────────────────────────────────────────────────────┤
+│ condition && <Component />      │ Nur wenn truthy          │
+│ ACHTUNG: 0 wird gerendert!      │ count > 0 && ...         │
+│ Kürzer als ternär mit null      │ Standard-Pattern         │
+│ Short-Circuit Evaluation        │ Stoppt bei falsy         │
+└─────────────────────────────────────────────────────────────┘
 
-TERNÄRER OPERATOR:
-✅ condition ? wennTrue : wennFalse
-✅ Perfekt für einfache Bedingungen
-✅ Sehr häufig in JSX (React)
-✅ Nicht zu tief verschachteln
+┌─────────────────────────────────────────────────────────────┐
+│ 3. TRUTHY/FALSY & GUARD CLAUSES                            │
+├─────────────────────────────────────────────────────────────┤
+│ Falsy: false,0,"",null,undef,NaN│ Alles andere: truthy     │
+│ Guard Clauses für Early Return │ if (!data) return null   │
+│ Optional Chaining modern        │ user?.name               │
+│ Defensive Programmierung        │ Fehler-Fälle zuerst      │
+└─────────────────────────────────────────────────────────────┘
 
-SWITCH-CASE:
-✅ Gut für viele exakte Vergleiche (===)
-✅ break nicht vergessen (sonst Fall-Through)
-✅ Mehrere Cases für gleichen Code möglich
-✅ default für "alles andere"
-✅ Häufig in Reducers (React)
+┌─────────────────────────────────────────────────────────────┐
+│ 4. SWITCH-CASE FÜR REDUCERS                                │
+├─────────────────────────────────────────────────────────────┤
+│ Viele exakte Vergleiche         │ action.type === "..."    │
+│ break nicht vergessen!          │ Sonst Fall-Through       │
+│ default für unbekannte Actions  │ return state             │
+│ Standard in useReducer/Redux    │ Immutable Updates        │
+└─────────────────────────────────────────────────────────────┘
 
-VERGLEICHSOPERATOREN:
-✅ IMMER === statt == verwenden
-✅ !==, >, <, >=, <=
-✅ Truthy/Falsy Werte beachten
 
-LOGISCHE OPERATOREN:
-✅ && (UND), || (ODER), ! (NICHT)
-✅ Für komplexere Bedingungen
-✅ Short-Circuit Evaluation nutzen
+HÄUFIGE FEHLER (und wie man sie vermeidet):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+❌ if in JSX verwenden              → Verwende ternär oder &&
+❌ count && <Component />           → Rendert 0! Verwende count > 0
+❌ Zu viele ternäre Verschachtelungen → if-else vor return verwenden
+❌ break in switch vergessen        → Fall-Through Bug
+❌ default in Reducer vergessen     → Unbekannte Actions crashen
+❌ state direkt mutieren im Reducer → Immer neues Objekt returnen
 
-BEST PRACTICES:
-✅ === statt == (immer!)
-✅ Geschweifte Klammern immer verwenden
-✅ Guard Clauses für defensive Programmierung
-✅ Ternärer Operator für einfache Fälle
-✅ if-else für komplexe Logik
-✅ switch für viele exakte Vergleiche
-✅ Klammern für Klarheit bei komplexen Bedingungen
+
+DEBUGGING-TIPPS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+→ Boolean-Konvertierung testen:     console.log(!!value)
+→ Ternär Zwischenergebnisse:        const result = cond ? a : b; console.log(result)
+→ Guard Clauses mit Logs:           if (!data) { console.log("no data"); return }
+→ Reducer State ausgeben:           console.log("State:", state, "Action:", action)
+→ Falsy-Check:                      console.log("Falsy?", !value)
+
+
+VORBEREITUNG FÜR REACT:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Diese Patterns wirst du in React JEDEN TAG verwenden:
+
+→ Ternär für Conditional Rendering: {loading ? <Spinner /> : <Content />}
+→ && für "nur wenn":                {isLoggedIn && <Profile />}
+→ Guard Clauses in Komponenten:     if (!data) return null;
+→ Optional Chaining:                {user?.name || "Anonymous"}
+→ Switch in Reducers:               case "ADD": return {...state, items: [...]}
+
+KRITISCHE PATTERN-KOMBINATIONEN:
+→ {items?.length > 0 && <List items={items} />}
+→ {error ? <Error /> : loading ? <Spinner /> : <Content />}
+→ className={isActive ? "active" : "inactive"}
+→ if (!isValid) return <ValidationError />;
+
+Merke: In JSX kannst du nur Expressions verwenden!
+Ternär und && sind deine wichtigsten Werkzeuge.
 */
 
-console.log("\n✅ 2.1 Bedingte Anweisungen abgeschlossen!");
+console.log("\n✅ Bedingte Anweisungen abgeschlossen!");
+console.log("💡 Ternär & && sind die Basis für React Conditional Rendering!");
