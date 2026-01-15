@@ -1,51 +1,58 @@
-import products from './products';
+import productsData from './products';
+const products = productsData as unknown as Product[];
 
-interface Product {
- name: string;
- price: number;
- preOrder: string;
+interface Product 
+{
+  name: string;
+  price: number;
+  preOrder: boolean;
 }
 
-let product: Product | undefined = products[0];
-let productName: string;
-const findProduct = products.find((p) => p.name === 'fanny pack');
+const product = products[2];
+let productName: string = product.name;
 let shipping : number = 0;
-let shippingAddress: string = "Friedrichstraße 10, Berlin, 10117";
+let shippingAddress: string = "Boston";
 let taxPercent: number;
 let taxTotal: number;
 let total: number;
 
 let shoppingCart: Product[] = [];
 
-if (!findProduct) {
-  throw new Error("Produkt 'fanny pack' wurde nicht gefunden!");
+if (!product) 
+{
+  throw new Error("Kein Produkt gefunden!");
 }
 
-product = findProduct;
+// test and exercise purpose 
+const findProduct = products.find((productElement) => productElement.name === 'fanny pack');
 
+let checkPreOrder = (element : Product) => 
 {
-  let checkPreOrder = (element : Product) => 
-  {
-    if (element.preOrder === 'true') { console.log("You'll get notified when it's sent."); } 
-    else { console.log("It has no pre order option.")}
-    console.log("\n");
+  if (element.preOrder === true) { console.log("You'll get notified when it's sent."); } 
+  else { console.log("It has no pre order option.")}
+  console.log("\n");
+}
+
+const freeShipping = () => 
+{
+  shipping = product.price >= 25 ? 0 : 5;
+  if (shipping === 0) {
+    console.log("We provide free shipping for this product.");
   }
+};
 
-  const freeShipping = (element: Product) => {
-    shipping = element.price >= 25 ? 0 : 5;
-    if (shipping === 0) {
-      console.log("We provide free shipping for this product.");
-    }
-  };
+taxPercent = shippingAddress === 'New York' ? 0.1 : 0.05;
 
-  taxPercent = shippingAddress === 'New York' ? 0.1 : 0.05;
+if (product !== undefined && product !== null) 
+{
+  freeShipping();
   taxTotal = product.price * taxPercent; 
   total = product.price + taxTotal + shipping;
 
   const createReceipt = () => {
     const receipt = `
       Your receipt:
-        Product:           ${product?.name}
+        Product:           ${productName}
         Price:             ${product?.price}
         Shipping:          ${shipping}
         Tax (${taxPercent * 100}%): ${taxTotal.toFixed(2)}
@@ -54,8 +61,7 @@ product = findProduct;
     `;
     console.log(receipt);
   };
-
+  
   checkPreOrder(product);
-  freeShipping(product);
   createReceipt();
 }
