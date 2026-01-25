@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="adf5f056-1f51-4297-be87-5d6e081fe122" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../../../0-Übungen/codecademy-typescript-course/01-restaurant-recommender/code-review.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../0-Übungen/codecademy-typescript-course/01-restaurant-recommender/restaurant-recommender.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../0-Übungen/codecademy-typescript-course/01-restaurant-recommender/restaurants.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../0-Übungen/codecademy-typescript-course/02-type-mart/products.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../0-Übungen/codecademy-typescript-course/02-type-mart/type-mart.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../0-Übungen/übungen-0.1-variablen.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../0-Übungen/übungen-0.2-typen.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../0-Übungen/übungen-claude-ai.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ytb-danny-pinia-setup-store/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ytb-danny-pinia-setup-store/.vscode/extensions.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ytb-danny-pinia-setup-store/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ytb-danny-pinia-setup-store/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ytb-danny-pinia-setup-store/jsconfig.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ytb-danny-pinia-setup-store/package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ytb-danny-pinia-setup-store/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ytb-danny-pinia-setup-store/public/favicon.ico" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ytb-danny-pinia-setup-store/src/App.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ytb-danny-pinia-setup-store/src/assets/base.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ytb-danny-pinia-setup-store/src/assets/logo.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ytb-danny-pinia-setup-store/src/assets/main.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ytb-danny-pinia-setup-store/src/components/Counter.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ytb-danny-pinia-setup-store/src/main.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ytb-danny-pinia-setup-store/src/router/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ytb-danny-pinia-setup-store/src/stores/counter.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ytb-danny-pinia-setup-store/src/views/AboutView.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ytb-danny-pinia-setup-store/src/views/HomeView.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ytb-danny-pinia-setup-store/vite.config.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ytb-syntax-modern-vue-ts-comp-api/tasks-app/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ytb-syntax-modern-vue-ts-comp-api/tasks-app/.vscode/extensions.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ytb-syntax-modern-vue-ts-comp-api/tasks-app/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ytb-syntax-modern-vue-ts-comp-api/tasks-app/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ytb-syntax-modern-vue-ts-comp-api/tasks-app/package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ytb-syntax-modern-vue-ts-comp-api/tasks-app/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ytb-syntax-modern-vue-ts-comp-api/tasks-app/public/vite.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ytb-syntax-modern-vue-ts-comp-api/tasks-app/src/App.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ytb-syntax-modern-vue-ts-comp-api/tasks-app/src/components/FilterButton.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ytb-syntax-modern-vue-ts-comp-api/tasks-app/src/components/TaskForm.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ytb-syntax-modern-vue-ts-comp-api/tasks-app/src/components/TaskList.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ytb-syntax-modern-vue-ts-comp-api/tasks-app/src/main.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ytb-syntax-modern-vue-ts-comp-api/tasks-app/src/style.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ytb-syntax-modern-vue-ts-comp-api/tasks-app/src/types.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ytb-syntax-modern-vue-ts-comp-api/tasks-app/tsconfig.app.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ytb-syntax-modern-vue-ts-comp-api/tasks-app/tsconfig.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ytb-syntax-modern-vue-ts-comp-api/tasks-app/tsconfig.node.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ytb-syntax-modern-vue-ts-comp-api/tasks-app/vite.config.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../cheatsheet-js.txt" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../.." />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 2
+}]]></component>
+  <component name="ProjectId" id="38l9lM5abHoUOULxWwEX52ev2KW" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "javascript.preferred.runtime.type.id": "node",
+    "last_opened_file_path": "C:/sourcecode/repos-js-ts/codex-js-ts-frontend-backend/2-Frontend/vue/vuejs-seminar-einführung",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "ts.external.directory.path": "D:\\WebStorm 2025.3.2\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-WS-253.30387.83" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="adf5f056-1f51-4297-be87-5d6e081fe122" name="Changes" comment="" />
+      <created>1769363440413</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1769363440413</updated>
+      <workItem from="1769363441442" duration="1407000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
