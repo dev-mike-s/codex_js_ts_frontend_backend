@@ -1,14 +1,17 @@
-<script setup></script>
+<script setup>
+  import oaHelloDev from "@/components/oaHelloDev.vue";
+  import caHelloDev from "@/components/caHelloDev.vue";
+</script>
 
 <template>
-  <h1>You did it!</h1>
-  <p>
-    Visit <a href="https://vuejs.org/"
-             target="_blank"
-             rel="noopener">vuejs.org
-          </a>
-            to read the documentation
-  </p>
+  <oaHelloDev/>
+  <caHelloDev/>
 </template>
 
-<style scoped></style>
+<style>
+#app {
+  font-family: "Bauhaus 93", sans-serif;
+  text-align: center;
+
+}
+</style>
